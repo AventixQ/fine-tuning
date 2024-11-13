@@ -1,0 +1,5 @@
+meta-llama/Llama-2-7b-chat-hf
+openlm-research/open_llama_3b_v2
+microsoft/DialoGPT-small
+meta-llama/CodeLlama-7b-Python-hf
+infly/OpenCoder-8B-Instruct
