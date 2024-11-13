@@ -4,6 +4,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf", torch_dtype=torch.float16)
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
 
+
+
 model.eval()
 
 input_text = "User: There are 5 people in the room. How many people is in the room?\nBot:"

@@ -2,11 +2,9 @@ def tokenize_function(input_data, tokenizer):
     inputs = input_data["input"]
     outputs = input_data["output"]
 
-    # Input and output tokenizer
     model_inputs = tokenizer(inputs, max_length=512, truncation=True, padding="max_length")
     labels = tokenizer(outputs, max_length=512, truncation=True, padding="max_length").input_ids
     
-    # Ignore padding
     labels = [[-100 if token == tokenizer.pad_token_id else token for token in label] for label in labels]
     
     model_inputs["labels"] = labels
