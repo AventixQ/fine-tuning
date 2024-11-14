@@ -34,7 +34,7 @@ else:
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
-print(f"Model {model_name} został załadowany pomyślnie.")
+print(f"Model {model_name} was loaded correctly.")
 
 file_names = create_output_dir_name(model_name)
 

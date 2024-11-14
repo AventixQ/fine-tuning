@@ -2,3 +2,9 @@ pandas
 transformers
 datasets
 huggingface_hub
+torch
+tiktoken
+openpyxl
+protobuf
+sentencepiece
+accelerate>=0.26.0

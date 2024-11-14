@@ -62,6 +62,20 @@ Pliki możesz wstawiać z lokalnej konsoli m.in. za pomocą polecenia:
 
 (lub do innej ścieżki w katalogu zdalnym)
 
+Wyszkolony model polecam:
+
+- spakować w zdalnym środowisku:
+
+`tar -czf results.tar.gz <ścieżka do folderu>`
+
+- uruchomić lokalnie polecenie:
+
+`sftp inf<indeks>@slurm.cs.put.poznan.pl`
+
+- przesłać plik do lokalnego folderu:
+
+`get <zdalna ścieżka pliku>`
+
 b. Zainstaluj niezbędne pakiety
 
 - mając plik **requirements.txt** w środowisku, uruchom:

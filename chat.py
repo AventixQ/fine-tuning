@@ -1,14 +1,16 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf", torch_dtype=torch.float16)
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
+model_path = "./outputs/results/microsoft_/checkpoint-2000/"
+tokenizer_name = 'microsoft/DialoGPT-small'
+tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
+model = AutoModelForCausalLM.from_pretrained(model_path)
 
 
 
 model.eval()
 
-input_text = "User: There are 5 people in the room. How many people is in the room?\nBot:"
+input_text = "User: Write a ZIMPL code for this input: A school is preparing a trip for 400 students. The company who is providing the transportation has 10 buses of 50 seats each and 8 buses of 40 seats, but only has 9 drivers available. The rental cost for a large bus is  and  for a small bus. Calculate how many buses of each type should be used for the trip for the least possible cost.\nBot:"
 input_ids = tokenizer.encode(input_text, return_tensors='pt')
 attention_mask = torch.ones(input_ids.shape, dtype=torch.long)
 

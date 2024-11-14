@@ -13,7 +13,7 @@ def excel_to_json(excel_file, json_file):
     data = []
     for _, row in df.iterrows():
         data.append({
-            "input": row["INPUT"],
+            "input": "Write ZIMPL code of this task: "+row["INPUT"],
             "output": row["OUTPUT"]
         })
 
@@ -67,7 +67,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name)
 tokenizer.pad_token = tokenizer.eos_token
 #model.gradient_checkpointing_enable()
 
-print(f"Model {model_name} został załadowany pomyślnie.")
+print(f"Model {model_name} was loaded correctly.")
 file_names = create_output_dir_name(model_name)
 
 excel_file = 'examples-2000.xlsx'  ## Set an excel file name with data
@@ -91,17 +91,17 @@ if not os.path.exists(output_dir):
 
 training_args = TrainingArguments(
     output_dir=output_dir,
-    eval_strategy="steps",
+    eval_strategy="no",
     learning_rate=2e-5,
-    per_device_train_batch_size=2,
-    per_device_eval_batch_size=2,
+    per_device_train_batch_size=1,
+    per_device_eval_batch_size=1,
     num_train_epochs=5,
     weight_decay=0.01,
     logging_dir="./logs",
-    gradient_accumulation_steps=4,
+    gradient_accumulation_steps=8,
     save_steps=500,
     save_total_limit=2,
-    load_best_model_at_end=True
+    load_best_model_at_end=False
 )
 
 trainer = Trainer(

@@ -1,5 +1,4 @@
-meta-llama/Llama-2-7b-chat-hf
-openlm-research/open_llama_3b_v2
-microsoft/DialoGPT-small
-meta-llama/CodeLlama-7b-Python-hf
-infly/OpenCoder-8B-Instruct
+meta-llama/Llama-2-7b-chat-hf # ok
+openlm-research/open_llama_3b_v2 # ok
+meta-llama/CodeLlama-7b-Instruct-hf # ERROR
+infly/OpenCoder-1.5B-Instruct # ERROR

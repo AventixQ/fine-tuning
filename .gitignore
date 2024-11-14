@@ -4,6 +4,8 @@ results/
 .idea/
 notes
 wandb/
+outputs/
+checkpoint-2500/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
