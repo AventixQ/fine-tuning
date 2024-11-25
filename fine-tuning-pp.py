@@ -66,17 +66,17 @@ print(tokenized_datasets)
 
 training_args = TrainingArguments(
     output_dir="/results",
-    eval_strategy="steps",
+    eval_strategy="no",
     learning_rate=2e-5,
-    per_device_train_batch_size=2,
-    per_device_eval_batch_size=2,
+    per_device_train_batch_size=1,
+    per_device_eval_batch_size=1,
     num_train_epochs=5,
     weight_decay=0.01,
     logging_dir="/logs",
     gradient_accumulation_steps=4,
     save_steps=500,
     save_total_limit=2,
-    load_best_model_at_end=True
+    load_best_model_at_end=False
 )
 
 trainer = Trainer(

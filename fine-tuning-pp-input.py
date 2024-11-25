@@ -1,24 +1,11 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import json
-from datasets import Dataset
+from datasets import Dataset, load_dataset
 from transformers import Trainer, TrainingArguments
 import torch
 import pandas as pd
 import sys
 import os
-
-def excel_to_json(excel_file, json_file):
-    df = pd.read_excel(excel_file)
-
-    data = []
-    for _, row in df.iterrows():
-        data.append({
-            "input": "Write ZIMPL code of this task: "+row["INPUT"],
-            "output": row["OUTPUT"]
-        })
-
-    with open(json_file, "w") as f:
-        json.dump(data, f, indent=4)
         
 def tokenize(input_data, tokenizer):
     inputs = input_data["input"]
@@ -47,44 +34,28 @@ print(torch.cuda.get_device_name(torch.cuda.current_device()))
 torch.cuda.empty_cache()
 
 if len(sys.argv) != 2:
-    model_name = "meta-llama/CodeLlama-7b-Python-hf"
+    model_name = "microsoft/DialoGPT-small"
+
 else:
     model_name = sys.argv[1]
 
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
-
-#tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
-#model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
-#tokenizer = AutoTokenizer.from_pretrained("openlm-research/open_llama_3b_v2")
-#model = AutoModelForCausalLM.from_pretrained("openlm-research/open_llama_3b_v2", torch_dtype=torch.float16)
-#tokenizer = AutoTokenizer.from_pretrained("gpt2")
-#model = AutoModelForCausalLM.from_pretrained("gpt2")
-#model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small", torch_dtype=torch.float16)
-#tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
+tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
 
 
 tokenizer.pad_token = tokenizer.eos_token
-#model.gradient_checkpointing_enable()
+
 
 print(f"Model {model_name} was loaded correctly.")
 file_names = create_output_dir_name(model_name)
 
-excel_file = 'examples-2000.xlsx'  ## Set an excel file name with data
-json_file = f'input_data_{file_names}.json'  ## Set a json file name for your LLM fine-tuning data
-excel_to_json(excel_file, json_file)
-with open(json_file, 'r') as f:
-    data = json.load(f)
-
-
-
-dataset = Dataset.from_list(data)
+dataset = load_dataset("Tamiza/zimpl_data", split="train")
 
 tokenized_datasets = dataset.map(lambda x: tokenize(x, tokenizer), batched=True)
 
 print(tokenized_datasets)
 
-output_dir = f"./results/{file_names}"
+output_dir = f"./results2/{file_names}"
 print(output_dir)
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
@@ -98,7 +69,7 @@ training_args = TrainingArguments(
     num_train_epochs=5,
     weight_decay=0.01,
     logging_dir="./logs",
-    gradient_accumulation_steps=8,
+    gradient_accumulation_steps=4,
     save_steps=500,
     save_total_limit=2,
     load_best_model_at_end=False
